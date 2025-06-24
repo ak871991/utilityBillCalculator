@@ -188,3 +188,19 @@ body.dark .result-box {
 body.dark .section-title {
   color: #ccc;
 }
+
+.checkbox-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: normal;
+}
