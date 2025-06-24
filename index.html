@@ -1,97 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Utility Bill Calculator</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Utility Bill Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result-box {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+        }
+        .checkbox-label input {
+            width: auto;
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
+
     <h2>🏠 Utility Bill Calculator</h2>
 
-    <div class="toggle-mode">
-      <label class="switch">
-        <input type="checkbox" id="darkModeToggle">
-        <span class="slider round"></span>
-      </label>
-      <span>Dark Mode</span>
+    <div class="form-group">
+        <label>Date:</label>
+        <input type="date" id="datePicker" onchange="updateFormattedDate()">
     </div>
 
-    <div class="form-group-full">
-      <label>Date:</label>
-      <input type="date" id="datePicker" onchange="updateFormattedDate()" />
-    </div>
-
-    <div class="section-title">💡 Electricity Details</div>
-    <div class="form-row">
-      <div class="form-group">
+    <div class="form-group">
         <label>Total Electricity Bill (₹):</label>
-        <input type="number" id="totalBill" step="0.01" />
-      </div>
-      <div class="form-group">
+        <input type="number" id="totalBill" step="0.01">
+    </div>
+
+    <div class="form-group">
         <label>Total Electricity Units:</label>
-        <input type="number" id="totalUnits" step="0.01" />
-      </div>
+        <input type="number" id="totalUnits" step="0.01">
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
+    <div class="form-group">
         <label>Meter 1 Previous Reading:</label>
-        <input type="number" id="meter1Prev" step="0.01" />
-      </div>
-      <div class="form-group">
+        <input type="number" id="meter1Prev" step="0.01">
+    </div>
+
+    <div class="form-group">
         <label>Meter 1 Current Reading:</label>
-        <input type="number" id="meter1Curr" step="0.01" />
-      </div>
+        <input type="number" id="meter1Curr" step="0.01">
     </div>
 
-    <div class="form-row">
-      <div class="form-group">
+    <div class="form-group">
         <label>Meter 2 Previous Reading:</label>
-        <input type="number" id="meter2Prev" step="0.01" />
-      </div>
-      <div class="form-group">
+        <input type="number" id="meter2Prev" step="0.01">
+    </div>
+
+    <div class="form-group">
         <label>Meter 2 Current Reading:</label>
-        <input type="number" id="meter2Curr" step="0.01" />
-      </div>
+        <input type="number" id="meter2Curr" step="0.01">
     </div>
 
-    <div class="form-group-full checkbox-group">
-      <label for="divideMeter2" class="checkbox-label">
-        <input type="checkbox" id="divideMeter2" />
-        Divide Meter 2 by 2
-      </label>
-    </div>
-
-    <div class="section-title">🚿 Water & Rent</div>
-    <div class="form-row">
-      <div class="form-group">
+    <div class="form-group">
         <label>Total Water Bill (₹):</label>
-        <input type="number" id="waterBill" step="0.01" />
-      </div>
-      <div class="form-group">
-        <label>Rent (₹):</label>
-        <input type="number" id="rent" step="0.01" />
-      </div>
+        <input type="number" id="waterBill" step="0.01">
     </div>
 
-    <div class="form-group-full checkbox-group">
-      <label for="divideWater" class="checkbox-label">
-        <input type="checkbox" id="divideWater" />
-        Divide Water Bill by 2
-      </label>
+    <div class="form-group">
+        <label>Rent (₹):</label>
+        <input type="number" id="rent" step="0.01">
+    </div>
+
+    <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+            <input type="checkbox" id="divideMeter2"> Divide Meter 2 by 2
+        </label>
+        <label class="checkbox-label">
+            <input type="checkbox" id="divideWater"> Divide Water Bill by 2
+        </label>
     </div>
 
     <button onclick="calculateBill()">🧾 Calculate Bill</button>
-    <div class="actions">
-      <button onclick="printBill()">🖨️ Print</button>
-      <button onclick="downloadPDF()">📥 Download PDF</button>
-    </div>
 
     <div id="billOutput" class="result-box"></div>
-  </div>
 
-  <script src="script.js"></script>
+    <script>
+        function updateFormattedDate() {
+            const dateInput = document.getElementById("datePicker").value;
+            if (dateInput) {
+                const dateObj = new Date(dateInput);
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = dateObj.toLocaleDateString('en-GB', options);
+                document.getElementById("datePicker").setAttribute("data-formatted", formattedDate);
+            }
+        }
+
+        function calculateBill() {
+            const dateInput = document.getElementById("datePicker").value;
+            if (!dateInput) {
+                document.getElementById("billOutput").textContent = "❌ Please select a date.";
+                return;
+            }
+            
+            const formattedDate = document.getElementById("datePicker").getAttribute("data-formatted") || dateInput;
+            
+            const totalBill = parseFloat(document.getElementById("totalBill").value);
+            const totalUnits = parseFloat(document.getElementById("totalUnits").value);
+            const meter1Prev = parseFloat(document.getElementById("meter1Prev").value);
+            const meter1Curr = parseFloat(document.getElementById("meter1Curr").value);
+            const meter2Prev = parseFloat(document.getElementById("meter2Prev").value);
+            const meter2Curr = parseFloat(document.getElementById("meter2Curr").value);
+            const waterBill = parseFloat(document.getElementById("waterBill").value);
+            const rent = parseFloat(document.getElementById("rent").value);
+            const divideMeter2 = document.getElementById("divideMeter2").checked;
+            const divideWater = document.getElementById("divideWater").checked;
+
+            if (isNaN(totalBill) || isNaN(totalUnits) || isNaN(meter1Prev) || isNaN(meter1Curr) ||
+                isNaN(meter2Prev) || isNaN(meter2Curr) || isNaN(waterBill) || isNaN(rent)) {
+                document.getElementById("billOutput").textContent = "❌ Please fill all fields correctly.";
+                return;
+            }
+
+            const perUnitCost = totalBill / totalUnits;
+            const meter1Units = meter1Curr - meter1Prev;
+            let meter2Units = meter2Curr - meter2Prev;
+            if (divideMeter2) meter2Units /= 2;
+            const totalTenantUnits = meter1Units + meter2Units;
+            const tenantElectricityBill = totalTenantUnits * perUnitCost;
+            let tenantWaterBill = waterBill;
+            if (divideWater) tenantWaterBill /= 2;
+            const totalAmount = rent + tenantElectricityBill + tenantWaterBill;
+
+            const billSummary = 
+`🙏 ॐ नमः शिवाय 🙏
+
+📅 DATE: ${formattedDate}
+
+⚡ TOTAL ELECTRICITY BILL: ₹${totalBill.toFixed(2)}
+🔢 TOTAL UNITS: ${totalUnits.toFixed(2)}
+💰 PER UNIT COST: ₹${perUnitCost.toFixed(2)}
+
+----------------------------------------
+
+🔌 METER 1 USAGE: (${meter1Curr.toFixed(2)} - ${meter1Prev.toFixed(2)}) = ${meter1Units.toFixed(2)} UNITS
+💦 METER 2 USAGE: (${meter2Curr.toFixed(2)} - ${meter2Prev.toFixed(2)}) ${divideMeter2 ? "/ 2" : ""} = ${meter2Units.toFixed(2)} UNITS
+📊 TOTAL TENANT USAGE: ${totalTenantUnits.toFixed(2)} UNITS
+
+----------------------------------------
+
+⚡ ELECTRICITY BILL: ₹${tenantElectricityBill.toFixed(2)}
+
+💧 WATER BILL: ₹${waterBill.toFixed(2)} ${divideWater ? " / 2 = ₹" + tenantWaterBill.toFixed(2) : ""}
+🏠 RENT: ₹${rent.toFixed(2)}
+
+----------------------------------------
+
+💵 TOTAL AMOUNT PAYABLE: ₹${totalAmount.toFixed(2)}
+
+✨ धन्यवाद! ✨`;
+
+            document.getElementById("billOutput").textContent = billSummary;
+        }
+    </script>
+
 </body>
 </html>
